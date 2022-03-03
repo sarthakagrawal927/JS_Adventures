@@ -12,8 +12,6 @@ when we execute a function er create a new global context comprising
 2) A local memory (variable context), where anything defined inside a function is stored
 
 ```js
-
-
 const num = 1; // adds num to memory and sets it to 1
 function multipleBy2(inputNumber) {
   // adds multipleBy2 to memory and sets it to a function
