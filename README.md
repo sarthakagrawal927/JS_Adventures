@@ -6,4 +6,6 @@ Interesting things I learn about the language.
 
 2) [Async](async.md)
 
-30 [Promises](promises.md)
+3) [Promises](promises.md)
+
+4) [Iterators](iterators.md)
