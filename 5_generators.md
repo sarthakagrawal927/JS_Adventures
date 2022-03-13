@@ -62,19 +62,26 @@ We end up with a 'stream'/flow of values that we can get one-by-one by running r
 We can use the ability to pause createFlow's running and then restart it only when our data returns
 
 ```js
-function doWhenDataReceived(value){
-  returnNextElement.next(value)
+function doWhenDataReceived(value){ // receives the value returned by the api call
+  returnNextElement.next(value) // goes back to the createFlow and continues from where the yield exited.
 }
 
 function* createFlow(){
-  const data = yield fetch(url)
-  console.log(data)
+  const data = yield fetch("twitter url")
+  // fetch returns promise object, which is then thrown out of the function with yield to the output of returnNextElement.next(), so data is still undefined
+
+  console.log(data) // data is assigned the value passed to it from doWhenDataReceived -> returnNextElement.next() - which got the value returned from fetch.
 }
 
 const returnNextElement = createFlow()
-const futureData = returnNextElement.next()
-futureDate.then(doWhenDataReceived)
+const futureData = returnNextElement.next() // futureData has promise returned by fetch
+
+futureDate.then(doWhenDataReceived) // .then adds the function (doWhenDataReceived) in the onFulfillment array which is then triggered when the data is received
+
+console.log("Me first") // will be executed first as
 ```
 
 We get to control when we return back to createFlow & continue executing - by setting up the trigger to do so
 (returnNextElement.next()) to be run by our function that was triggered by promise resolution (when the value returned from twitter)
+
+When we get the data from api, the functions in the onFulfillment array (doWhenDataReceived) are pushed to the microTask Queue for execution. (which are executed as soon as the global context is executed)
